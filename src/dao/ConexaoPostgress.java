@@ -1,12 +1,25 @@
-package aulaexemplo;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package dao;
 
-//import java.sql.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 
-public class ConexaoOracle { // classe principal
-
-    public static Connection ConexaoOracle;
+/**
+ *
+ * @author acsantana
+ */
+public class ConexaoPostgress {
+    
+    public static Connection ConexaoPostgress;
     public static Statement statement;
     public static ResultSet resultset;
     public ResultSetMetaData metaData;
@@ -14,21 +27,21 @@ public class ConexaoOracle { // classe principal
     
      private final String driver = "org.postgresql.Driver";
 
-    public  ConexaoOracle() { // metodo construtor
+    public  ConexaoPostgress() { // metodo construtor
               conecta();
     }
 
     public static Connection conecta() {
-        if (ConexaoOracle != null) {
-            return ConexaoOracle;
+        if (ConexaoPostgress != null) {
+            return ConexaoPostgress;
         } else {
             try {
                 Class.forName("org.postgresql.Driver");
-            ConexaoOracle = DriverManager.getConnection("jdbc:postgresql://localhost:5432/AulaJava", "postgres", "acs1707$"); 
+            ConexaoPostgress = DriverManager.getConnection("jdbc:postgresql://localhost:5432/AulaJava", "postgres", "acs1707$"); 
             
             System.out.println("Conectado");
                 // JOptionPane.showMessageDialog(null, "Conectado com sucesso");
-                return ConexaoOracle;
+                return ConexaoPostgress;
 
             } catch (ClassNotFoundException ex) {
                 JOptionPane.showMessageDialog(null, "Driver não localizado: " + ex);
@@ -46,7 +59,7 @@ public class ConexaoOracle { // classe principal
     public void desconecta() {
         boolean result = true;
         try {
-            ConexaoOracle.close();
+            ConexaoPostgress.close();
             // JOptionPane.showMessageDialog(null, "banco fechado");
         } catch (SQLException fecha) {
             JOptionPane.showMessageDialog(null, "Não foi possivel "
@@ -57,7 +70,7 @@ public class ConexaoOracle { // classe principal
 
     public void incluirSQL(String sql) {
         try {
-            statement = ConexaoOracle.createStatement(
+            statement = ConexaoPostgress.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             statement.execute("ALTER SESSION SET NLS_DATE_FORMAT = 'DD-MM-YYYY'");
             resultset = statement.executeQuery(sql);
@@ -77,7 +90,7 @@ public class ConexaoOracle { // classe principal
 
     public void executeSQL(String sql) {
         try {
-            statement = ConexaoOracle.createStatement(
+            statement = ConexaoPostgress.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
           //  statement.execute("ALTER SESSION SET NLS_DATE_FORMAT = 'DD-MM-YYYY'");
             resultset = statement.executeQuery(sql);
@@ -94,7 +107,7 @@ public class ConexaoOracle { // classe principal
 
     public void executeSQL(String sql, int sqlx) {
         try {
-            statement = ConexaoOracle.createStatement(
+            statement = ConexaoPostgress.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             statement.execute("ALTER SESSION SET NLS_DATE_FORMAT = 'DD-MM-YYYY'");
             resultset = statement.executeQuery(sql);
@@ -111,7 +124,7 @@ public class ConexaoOracle { // classe principal
 
     public void deleteSQL(String sql) {
         try {
-            statement = ConexaoOracle.createStatement(
+            statement = ConexaoPostgress.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             retorno = 0;
             retorno = statement.executeUpdate(sql);
@@ -133,7 +146,7 @@ public class ConexaoOracle { // classe principal
 
     public void atualizarSQL(String sql) {
         try {
-            statement = ConexaoOracle.createStatement(
+            statement = ConexaoPostgress.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             retorno = 0;
             retorno = statement.executeUpdate(sql);
@@ -181,7 +194,7 @@ public class ConexaoOracle { // classe principal
     }
 
     public static void main(String[] args) {
-        ConexaoOracle conexao = new ConexaoOracle();
+        ConexaoPostgress conexao = new ConexaoPostgress();
         //   ModeloCadCidade modelocidade = new ModeloCadCidade();
 
         String sql = "SELECT * FROM CADCIDADE WHERE idcidade = 1";
